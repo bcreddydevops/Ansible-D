@@ -1,0 +1,13 @@
+---
+- hosts: target
+  vars:
+    inv_file: /home/ansadmin/inv.txt
+  tasks:
+    - name: create a file
+      file:
+        path: "{{ inv_file }}"
+        state: touch
+    - name: generate inventory
+      lineinfile:
+        path: "{{ inv_file }}"
+        line: "{{ groups['local'] | join(',') }}"

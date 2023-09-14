@@ -1,0 +1,14 @@
+---
+- hosts: target
+  tasks:
+    - name: create a file
+      file:
+        path: /home/ansadmin/newfile
+        state: touch
+      register: output
+    - debug: msg="Register output is {{output}}"
+    - name: edit the file
+      lineinfile:
+        path: /home/ansadmin/newfile
+        line: "{{output.uid}}"
+

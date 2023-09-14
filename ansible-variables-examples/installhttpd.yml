@@ -1,0 +1,9 @@
+---
+- name: setting up httpd web server
+  hosts: target
+  become: yes
+
+  tasks:
+  - include_vars: myvars.yml
+  - name: install httpd
+    yum: name={{ package_name }} update_cache=yes state=latest

@@ -1,0 +1,10 @@
+---
+- hosts: local
+  vars:
+    myvar: Welcome to BCReddy DevOps Channel
+
+  tasks:
+    - name: ansible playbook variable define
+      debug:
+        msg: "{{ myvar }}"
+

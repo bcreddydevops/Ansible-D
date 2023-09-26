@@ -1,0 +1,18 @@
+---
+- hosts: target
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: Create new users
+      user:
+        name: '{{ item.name }}'
+        uid: '{{ item.uid }}'
+        state: present
+
+      loop:
+        - name: chinna
+          uid: 1020
+        - name: tushar
+          uid: 1030
+        - name: kundan
+          uid: 1040

@@ -1,0 +1,11 @@
+---
+- hosts: target
+  become: yes
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: performing package deployment
+      package:
+        name: '{{ item.name }}'
+        state: '{{ item.state }}'
+      loop: "{{ package_names }}"

@@ -1,0 +1,12 @@
+---
+- hosts: target
+  become: yes
+  tasks:
+    - name: using dict2items
+      debug:
+        msg: "The user {{ item.key }} is a {{ item.value }}"
+      loop: "{{ user_types | dict2items }}"
+      vars:
+        user_types:
+          Environment: Test
+          OnlineExame: Application

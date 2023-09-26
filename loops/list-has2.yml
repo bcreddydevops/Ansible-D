@@ -1,0 +1,12 @@
+---
+- hosts: target
+  become: yes
+  tasks:
+    - name: add users
+      user:
+        name: '{{ item.name }}'
+        state: present
+        groups: "{{ item.group }}"
+      loop:
+        - { name: 'sai', group: 'root' }
+        - { name: 'ram', group: 'root' }

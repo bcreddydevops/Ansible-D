@@ -1,0 +1,7 @@
+package_names:
+  - name: httpd
+    state: present
+  - name: nginx
+    state: present
+  - name: apache2
+    state: absent

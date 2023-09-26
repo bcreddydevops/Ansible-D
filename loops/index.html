@@ -1,0 +1,13 @@
+---
+- hosts: target
+  become: yes
+  tasks:
+    - name: Indexes with Ansible loop
+      debug:
+        msg: "The cricket player {{ item.0 }} is {{ item.1 }}"
+      with_indexed_items:
+        - "Sachin"
+        - "MSDhoni"
+        - "Virat"
+        - "Rohit"
+        - "KLRahul"

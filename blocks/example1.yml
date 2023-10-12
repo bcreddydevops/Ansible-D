@@ -1,0 +1,20 @@
+- name: Ensure a file exists or fail gracefully
+  hosts: localhost
+  tasks:
+    - name: Try to create a file
+      block:
+        - name: Attempt to create a file
+          file:
+            path: /tmp/chinna
+            state: touch
+      rescue:
+        - name: Handle failure
+          debug:
+            msg: "Failed to create the file. Handling the failure here."
+
+- name: Continue playbook execution
+  hosts: localhost
+  tasks:
+    - name: Another task
+      debug:
+        msg: "Continuing with other tasks"

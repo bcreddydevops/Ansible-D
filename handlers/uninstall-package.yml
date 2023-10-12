@@ -1,0 +1,9 @@
+---
+- hosts: target1
+  become: true
+  tasks:
+    - name: uninstall apache
+      apt:
+        name: "apache2"
+        state: "absent"
+

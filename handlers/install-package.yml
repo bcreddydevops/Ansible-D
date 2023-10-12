@@ -1,0 +1,72 @@
+---
+- name: Installing and Configuring Web Server on target node
+  hosts:
+    - target
+  become: yes
+  vars:
+    http_port: 8080
+    nginx_package_url: "http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-{{ansible_distribution_major_version}}-0.el{{ansible_distribution_major_version}}.ngx.noarch.rpm"
+  tasks:
+    - name: Debugging NGINX_PACKAGE_URL using msg
+      debug:
+        msg: "Nginx RPM Package - {{ nginx_package_url }}"
+
+    - name: Debugging NGINX_PACKAGE_URL using var
+      debug:
+        var: nginx_package_url
+
+    - name: Installing Apache Web Server
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Copying the index.html file
+      copy:
+        src: index.html
+        dest: /var/www/html/
+
+    - name: Changing the Apache web server port number
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^Listen '
+        insertafter: '^#Listen '
+        line: 'Listen {{ http_port }}'
+      when: http_port is defined
+      notify:
+        - Restart Apache
+
+    - name: Add Repository nginx-release
+      yum_repository:
+        name: nginx-release
+        description: Nginx Repository
+        baseurl: "{{ nginx_package_url }}"
+        gpgcheck: no
+        enabled: yes
+
+    - name: Disable the repository (Use enablerepo)
+      lineinfile:
+        path: /etc/yum.repos.d/nginx.repo
+        regexp: "^enabled"
+        line: "enabled=0"
+
+    - name: Installing Nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Starting services
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop:
+        - httpd
+        - nginx
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: httpd
+        state: restarted
+
+

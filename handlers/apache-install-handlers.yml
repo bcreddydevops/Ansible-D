@@ -1,0 +1,22 @@
+---
+- hosts: target1
+  become: true
+  tasks:
+    - name: Install apache
+      apt:
+        name: apache2
+        state: present
+      notify: Restart Apache
+
+    - name: Deploy static website
+      copy:
+        src: index.html
+        dest: /var/www/html/
+      notify: Restart Apache
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+

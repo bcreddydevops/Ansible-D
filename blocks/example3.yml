@@ -1,0 +1,39 @@
+- name: Handle Errors with Ansible Blocks
+  hosts: localhost
+  tasks:
+    - name: Attempt to create a directory (may fail)
+      block:
+        - name: Try to create a directory
+          file:
+            path: /tmp/example_directory
+            state: directory
+      rescue:
+        - name: Handle directory creation failure
+          debug:
+            msg: "Failed to create the directory. Handling the failure here."
+
+    - name: Attempt to create a file within the directory
+      block:
+        - name: Try to create a file
+          file:
+            path: /tmp/example_directory/example_file
+            state: touch
+      rescue:
+        - name: Handle file creation failure
+          debug:
+            msg: "Failed to create the file within the directory. Handling the failure here."
+
+    - name: Continue playbook execution
+      debug:
+        msg: "Continuing with other tasks"
+
+    - name: Clean up (always runs)
+      block:
+        - name: Perform cleanup
+          file:
+            path: /tmp/example_directory
+            state: absent
+      always:
+        - name: Cleanup completed
+          debug:
+            msg: "Cleanup completed, whether or not the block tasks succeeded."

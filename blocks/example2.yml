@@ -1,0 +1,14 @@
+- name: Ensure a file exists and perform cleanup
+  hosts: localhost
+  tasks:
+    - name: Ensure a file exists
+      block:
+        - name: Create a file
+          file:
+            path: /tmp/example_file
+            state: touch
+      always:
+        - name: Perform cleanup
+          file:
+            path: /tmp/example_file
+            state: absent

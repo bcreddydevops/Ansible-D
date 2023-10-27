@@ -1,0 +1,9 @@
+---
+- hosts: target1
+  become: true
+  roles:
+  - apache
+  vars:
+    server_name: "bchinnareddaiah.com"
+    server_admin_email: "b.chinnareddaiah@example.com"
+    document_root: "/var/www/html"

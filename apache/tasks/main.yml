@@ -1,0 +1,19 @@
+---
+- name: Install Apache
+  apt:
+    name: apache2
+    state: present
+  become: yes
+
+- name: Start Apache service
+  service:
+    name: apache2
+    state: started
+  become: yes
+
+- name: Copy Apache Virtual Host Configuration
+  template:
+    src: apache_vhost.conf.j2
+    dest: /etc/apache2/sites-available/{{ server_name }}
+  notify: Reload Apache
+  become: yes

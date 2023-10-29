@@ -1,0 +1,26 @@
+---
+- name: Manage Apache Web Server
+  hosts: target
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Install Apache
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start Apache
+      service:
+        name: httpd
+        state: started
+
+    - name: Copy HTML file
+      copy:
+        src: /etc/ansible/index.html
+        dest: /var/www/html/index.html
+
+    - name: Restart Apache
+      service:
+        name: httpd
+        state: restarted
+
